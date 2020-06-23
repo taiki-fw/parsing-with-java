@@ -1,0 +1,66 @@
+options
+{
+  STATIC = false;
+}
+
+PARSER_BEGIN(Parser)
+package key;
+import java.io.*;
+import java.awt.event.*;
+
+class Parser
+{
+  private ActionListener listener;
+
+  public void setActionListener(ActionListener a)
+  {
+    listener = a;
+  }
+
+  private void output(int value)
+  {
+    listener.actionPerformed(
+    new ActionEvent(this, 
+    ActionEvent.ACTION_PERFORMED, 
+    String.valueOf(value)));
+  }
+}
+
+PARSER_END(Parser)
+
+TOKEN :
+{
+  < NUM : [ "1"-"9" ] ([ "0"-"9" ])* >
+| < PLUSOP : "+" >
+| < EQOP : "=" >
+}
+
+SKIP :
+{
+  " "
+| "\n"
+| "\r"
+}
+
+public void start() :
+{
+  Token token;
+  int num;
+}
+{
+  (
+    token = < NUM >
+    {
+      num = Integer.parseInt(token.image);
+      output(num);
+    }
+    (
+      < PLUSOP > token = < NUM >
+      {
+        num += Integer.parseInt(token.image);
+        output(num);
+      }
+    )*
+    < EQOP >
+  )*
+}

@@ -1,20 +1,36 @@
 PARSER_BEGIN(Rei)
 import java.io.*;
-public class Rei {
-    public static void main(String[] arg) throws ParseException {
-	final Rei parser = new Rei(new InputStreamReader(System.in));
-	parser.start();
-    }
+
+public class Rei
+{
+  public static void main(String [] arg) throws ParseException
+  {
+    final Rei parser = new Rei(new InputStreamReader(System.in));
+    parser.start();
+  }
 }
+
 PARSER_END(Rei)
-SKIP: {
+
+SKIP :
+{
   " "
- | "\n"
- | "\r"
+| "\n"
+| "\r"
 }
-TOKEN: { <MOJI : ~[] >}
+
+TOKEN :
+{
+  < MOJI : ~[ ] >
+}
+
 private void start() :
 {}
 {
-   (<MOJI> { System.out.println("Hello World.");})*
+  (
+    < MOJI >
+    {
+      System.out.println("Hello World.");
+    }
+  )*
 }
